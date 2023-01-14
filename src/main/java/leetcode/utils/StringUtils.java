@@ -1,7 +1,7 @@
 package leetcode.utils;
 
 import java.io.InvalidClassException;
-import java.util.HashMap;
+import java.util.*;
 
 public class StringUtils {
 
@@ -10,7 +10,88 @@ public class StringUtils {
     }
 
     /**
-     * 392. Is Subsequence
+     * 1061. Lexicographically Smallest Equivalent String
+     *
+     * Result: Accepted
+     * Runtime beats: 7.39%
+     * Memory beats: 15.34%
+     *
+     * Notes:
+     * None-tree approach. Performance is poor comparatively.
+     *
+     * @param s1
+     * @param s2
+     * @param baseStr
+     * @return
+     */
+    public static String smallestEquivalentString(String s1, String s2, String baseStr) {
+
+        List<Set<Character>> listOfOrderedSets = new ArrayList<>(s1.length());
+
+        for (int i = 0; i < s1.length(); i++) {
+            char currentS1Forward = s1.charAt(i);
+            char currentS2Forward = s2.charAt(i);
+            char currentS1Backward = s1.charAt(s1.length()-i-1);
+            char currentS2Backward = s2.charAt(s2.length()-i-1);
+
+            boolean foundSetForward = false;
+            boolean foundSetBackward = false;
+
+            for (Set<Character> charSet : listOfOrderedSets) {
+                if (charSet.contains(currentS1Forward) || charSet.contains(currentS2Forward)) {
+                    charSet.add(currentS1Forward);
+                    charSet.add(currentS2Forward);
+                    foundSetForward = true;
+                }
+                if (charSet.contains(currentS1Backward) || charSet.contains(currentS2Backward)) {
+                    charSet.add(currentS1Backward);
+                    charSet.add(currentS2Backward);
+                    foundSetBackward = true;
+                }
+            }
+            if (!foundSetForward) {
+                SortedSet<Character> newCharSet = new TreeSet<>();
+                newCharSet.add(currentS1Forward);
+                newCharSet.add(currentS2Forward);
+                listOfOrderedSets.add(newCharSet);
+            }
+            if (!foundSetBackward) {
+                SortedSet<Character> newCharSet = new TreeSet<>();
+                newCharSet.add(currentS1Backward);
+                newCharSet.add(currentS2Backward);
+                listOfOrderedSets.add(newCharSet);
+            }
+        }
+
+        StringBuilder smallestEquivalentString = new StringBuilder();
+
+        char candidate = 'a';
+
+        for (int j = 0; j < baseStr.length(); j++) {
+            char currentBase = baseStr.charAt(j);
+            boolean foundInSets = false;
+            for (Set<Character> charSet : listOfOrderedSets) {
+                if (charSet.contains(currentBase)) {
+                    if(foundInSets) {
+                        candidate = charSet.stream().findFirst().get() > candidate ? candidate : charSet.stream().findFirst().get();
+                    } else {
+                        candidate = charSet.stream().findFirst().get();
+                    }
+                    foundInSets = true;
+                }
+            }
+            if (!foundInSets) {
+                smallestEquivalentString.append(currentBase);
+            } else {
+                smallestEquivalentString.append(candidate);
+            }
+        }
+
+        return smallestEquivalentString.toString();
+    }
+
+    /**
+     * 392. Is Subsequence:
      * Given two strings s and t, return true if s is a subsequence of t, or false otherwise.
      *
      * Result: Accepted

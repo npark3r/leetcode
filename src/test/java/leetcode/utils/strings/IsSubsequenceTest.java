@@ -1,4 +1,4 @@
-package leetcode.utils.Strings;
+package leetcode.utils.strings;
 
 import leetcode.utils.StringUtils;
 import org.junit.jupiter.api.Assertions;
