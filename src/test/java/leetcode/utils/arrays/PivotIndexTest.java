@@ -1,4 +1,4 @@
-package leetcode.utils.Arrays;
+package leetcode.utils.arrays;
 
 import leetcode.utils.ArrayUtils;
 import org.junit.jupiter.api.Assertions;
