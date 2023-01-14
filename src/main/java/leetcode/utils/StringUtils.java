@@ -9,15 +9,50 @@ public class StringUtils {
         throw new InvalidClassException("Util class, may not create instance of.");
     }
 
+    /**
+     * 392. Is Subsequence
+     * Given two strings s and t, return true if s is a subsequence of t, or false otherwise.
+     *
+     * Result: Accepted
+     * Runtime beats: 100%
+     * Memory beats: 84.89%
+     *
+     * Notes:
+     * Simple recursion to check substrings
+     *
+     * @param s first string
+     * @param t second string
+     * @return whether the strings are isomorphic
+     */
+    public static boolean isSubsequence(String s, String t) {
+        if (s.length() == 0) {
+            return true;
+        }
+        if (s.length() < 1 || s.length() > t.length()) {
+            return false;
+        }
 
+        int positionOfFirstChar = t.indexOf(s.charAt(0));
+
+        if (positionOfFirstChar == -1) {
+            return false;
+        }
+
+        String subString = t.substring(positionOfFirstChar + 1);
+
+        return isSubsequence(s.substring(1), subString);
+    }
 
     /**
      * 205. Isomorphic Strings
      * Return whether two strings are isomorphic.
-     *
+     * <p>
      * Result: Accepted
-     *  Runtime beats: 71.33%
-     *  Memory beats: 81.37%
+     * Runtime beats: 71.33%
+     * Memory beats: 81.37%
+     *
+     * Notes:
+     * Bi-directional maps
      *
      * @param s first string
      * @param t second string
@@ -39,7 +74,7 @@ public class StringUtils {
                 isIsomorphic = false;
                 break;
             }
-            if(maybeCharT == null) {
+            if (maybeCharT == null) {
                 characterMapS.put(currentS, currentT);
             }
             Character maybeCharS = characterMapT.get(currentT);
@@ -47,7 +82,7 @@ public class StringUtils {
                 isIsomorphic = false;
                 break;
             }
-            if(maybeCharS == null) {
+            if (maybeCharS == null) {
                 characterMapT.put(currentT, currentS);
             }
         }

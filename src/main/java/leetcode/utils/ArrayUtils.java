@@ -11,10 +11,14 @@ public class ArrayUtils {
     /**
      * 1480. Isomorphic Strings
      * Return array transformed to running sum of all previous elements
-     * <p>
+     *
      * Result: Accepted
      * Runtime beats: 100%
      * Memory beats: 72.96%
+     *
+     * Notes:
+     * Converge left and right pointers. Prefer left if unequal. Then test shifting merged pointer first left
+     * then right.
      *
      * @param nums the array to tranform
      * @return the array of running sums
@@ -25,8 +29,6 @@ public class ArrayUtils {
 
         int leftTotal = 0;
         int rightTotal = 0;
-
-        int difference;
 
         while (leftPointer != rightPointer) {
             if (rightPointer - leftPointer == 1) {
@@ -87,6 +89,8 @@ public class ArrayUtils {
      * Result: Accepted
      * Runtime beats: 100%
      * Memory beats: 82.94%
+     *
+     * Modify supplied array with updated running total
      *
      * @param nums the array to tranform
      * @return the array of running sums
