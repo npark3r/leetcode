@@ -1,12 +1,99 @@
 package leetcode.utils;
 
+import net.bytebuddy.dynamic.scaffold.MethodGraph;
+
 import java.io.InvalidClassException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StringUtils {
 
     private StringUtils() throws InvalidClassException {
         throw new InvalidClassException("Util class, may not create instance of.");
+    }
+
+    /**
+     * 942. DI String Match
+     *
+     * A permutation perm of n + 1 integers of all the integers in the range [0, n] can be represented as a string s of length n where:
+     *
+     * s[i] == 'I' if perm[i] < perm[i + 1], and
+     * s[i] == 'D' if perm[i] > perm[i + 1].
+     * Given a string s, reconstruct the permutation perm and return it. If there are multiple valid permutations perm, return any of them.
+     *
+     *  Notes:
+     *   First attempt, slow and lots of memeory
+     * @param s
+     * @return
+     */
+    public static int[] diStringMatch1(String s) {
+        int length = s.length();
+
+        List<Integer> list = IntStream.range(0, length + 1).boxed().toList();
+
+        LinkedList<Integer> linkedList = new LinkedList<>(list);
+
+        int[] intArray = new int[length + 1];
+
+        for (int index = 0; index < length; index++) {
+            switch (s.charAt(index)) {
+                case 'I':
+                    intArray[index] = linkedList.removeFirst();
+                    break;
+                case 'D':
+                    intArray[index] = linkedList.removeLast();
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        intArray[length] = linkedList.removeLast();
+        return intArray;
+    }
+
+    /**
+     * 942. DI String Match
+     *
+     * A permutation perm of n + 1 integers of all the integers in the range [0, n] can be represented as a string s of length n where:
+     *
+     * s[i] == 'I' if perm[i] < perm[i + 1], and
+     * s[i] == 'D' if perm[i] > perm[i + 1].
+     * Given a string s, reconstruct the permutation perm and return it. If there are multiple valid permutations perm, return any of them.
+     *
+     *  Notes:
+     *   Second attempt
+     *   Beats 97% runtime
+     *   Beats 70% memory
+     * @param s
+     * @return
+     */
+    public static int[] diStringMatch(String s) {
+        int length = s.length();
+
+        int low = 0;
+        int high = length;
+
+        int[] intArray = new int[length + 1];
+
+        for (int index = 0; index < length; index++) {
+            switch (s.charAt(index)) {
+                case 'I':
+                    intArray[index] = low;
+                    low++;
+                    break;
+                case 'D':
+                    intArray[index] = high;
+                    high--;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        intArray[length] = low;
+        return intArray;
     }
 
     /**

@@ -1,13 +1,14 @@
 package leetcode.utils;
 
-import java.io.InvalidClassException;
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class ArrayUtils {
 
-    private ArrayUtils() throws InvalidClassException {
-        throw new InvalidClassException("Util class, may not create instance of.");
+    RandomOtherClass randomOtherClass;
+
+    public ArrayUtils(RandomOtherClass randomOtherClass) {
+        this.randomOtherClass = randomOtherClass;
     }
 
     /**
@@ -264,7 +265,9 @@ public class ArrayUtils {
      * @param nums the array to tranform
      * @return the array of running sums
      */
-    public static int[] runningSum(int[] nums) {
+    public int[] runningSum(int[] nums) {
+        String returnVal = randomOtherClass.randomOtherMethod("haha");
+        System.out.println(returnVal + " from ArrayUtils");
         int runningTotal = 0;
         for (int i = 0; i < nums.length; i++) {
             runningTotal += nums[i];
