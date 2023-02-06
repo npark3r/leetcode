@@ -45,6 +45,30 @@ public class ArrayUtils {
     }
 
     /**
+     * ???. Can Jump
+     *
+     * @param nums
+     * @return
+     */
+    public static boolean canJump(int[] nums) {
+        if (nums.length < 2) return true;
+
+        int currentIndex = nums.length - 2;
+        int neededJumps;
+        while (currentIndex >= 0) {
+            neededJumps = 1;
+            while (neededJumps > nums[currentIndex]) {
+                neededJumps++;
+                currentIndex--;
+                if (currentIndex < 0) return false;
+            }
+            if (currentIndex == 0 && nums[currentIndex] >= 1) return true;
+            currentIndex--;
+        }
+        return false;
+    }
+
+    /**
      * 1. Two Sum
      *
      * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.

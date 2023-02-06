@@ -1,39 +1,59 @@
 package leetcode.utils;
 
+import leetcode.utils.concurrency.MyBlockingQueue;
+import leetcode.utils.concurrency.MyBlockingQueueTwo;
+
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TestThings {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         long startTime = System.currentTimeMillis();
 
-        List<String> list = new ArrayList<>();
-        list.add("Test");
-        list.add("Second");
+        MyBlockingQueueTwo<Integer> queue = new MyBlockingQueueTwo<>(5);
 
-        System.out.println(32 >> 3);
+        Thread producer1 = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1333);
+                    queue.put(new Random().nextInt());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        producer1.start();
+        Thread producer2 = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(2000);
+                    queue.put(new Random().nextInt());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        producer2.start();
+
+        Thread consumer1 = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                    Integer item = queue.take();
+                    System.out.println("Items is: " + item);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        consumer1.start();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println(elapsedTime);
+//        System.out.println(elapsedTime);
     }
 
-    public static boolean canJump(int[] nums) {
-        if (nums.length < 2) return true;
-
-        int currentIndex = nums.length - 2;
-        int neededJumps;
-        while (currentIndex >= 0) {
-            neededJumps = 1;
-            while (neededJumps > nums[currentIndex]) {
-                neededJumps++;
-                currentIndex--;
-                if (currentIndex < 0) return false;
-            }
-            if (currentIndex == 0 && nums[currentIndex] >= 1) return true;
-            currentIndex--;
-        }
-        return false;
+    public static <E> void mergeLists(List<E> list1, List<E> list2) {
+        list1.addAll(list2);
     }
 }
